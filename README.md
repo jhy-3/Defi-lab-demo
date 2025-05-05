@@ -1,75 +1,203 @@
-# [WAVS](https://docs.wavs.xyz) Monorepo Template
+# AVS
 
-**Template for getting started with developing WAVS applications**
+## Before Eigenlayer: restaking and dual staking
 
-A template for developing WebAssembly AVS applications using Rust and Solidity, configured for Windows *WSL*, Linux, and MacOS. The sample oracle service fetches the current price of a cryptocurrency from [CoinMarketCap](https://coinmarketcap.com) and saves it on chain.
+ref: https://docs.eigenlayer.xyz/restakers/concepts/overview
 
-## System Requirements
+https://www.blog.eigenlayer.xyz/dual-staking/
 
-<details>
-<summary>Core (Docker, Compose, Make, JQ, Node v21+)</summary>
 
-### Docker
-- **MacOS**: `brew install --cask docker`
-- **Linux**: `sudo apt -y install docker.io`
-- **Windows WSL**: [docker desktop wsl](https://docs.docker.com/desktop/wsl/#turn-on-docker-desktop-wsl-2) & `sudo chmod 666 /var/run/docker.sock`
-- [Docker Documentation](https://docs.docker.com/get-started/get-docker/)
 
-### Docker Compose
-- **MacOS**: Already installed with Docker installer
-- **Linux + Windows WSL**: `sudo apt-get install docker-compose-v2`
-- [Compose Documentation](https://docs.docker.com/compose/)
+## Autonomous Verifiable Services (*AVS*)
 
-### Make
-- **MacOS**: `brew install make`
-- **Linux + Windows WSL**: `sudo apt -y install make`
-- [Make Documentation](https://www.gnu.org/software/make/manual/make.html)
 
-### JQ
-- **MacOS**: `brew install jq`
-- **Linux + Windows WSL**: `sudo apt -y install jq`
-- [JQ Documentation](https://jqlang.org/download/)
 
-### Node.js
-- **Required Version**: v21+
-- [Installation via NVM](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
-</details>
 
-<details>
 
-<summary>Rust v1.84+</summary>
+## Eigenlayer
 
-### Rust Installation
+
+
+
+
+# 配置环境
+
+## 安装rust
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+网址：
+
+https://docs.wavs.xyz/tutorial/5-build
+
+https://github.com/Layr-Labs/hello-world-avs
+
+https://github.com/dabit3/wavs-eigenlayer-examples
+
+https://gist.github.com/dabit3/8e1846427e29e77d943b6cbf1bf6a493
+
+https://lzw.me/a/rust-abc.html
+
+https://blog.csdn.net/m0_46268825/article/details/142988063
+
+
+
+如何在Eigenlayer上构建基本的预言机（oracles）
+
+# Eigenlayer
+
+## AVS
+
+What ois AVS?
+
+AVS stands for Autonomous Verifiable Service
+
+You can think of AVSs as samrt services that process data off-chain, but still provide verifiable results on-chain.
+
+Eigenlayer is a platform for building verifiable services like oracles coprocessors, ZKTLS, verifiable AI, data availability and a handful of other verticals of services
+
+AVSs enable developers to build rich and expressive applications without being bound by any blockchain virtual machine
+
+Waves takes care of the heavy lifiting of building an AVS, like infrastructure
+
+Here is how waves works
+
+1. Write core service in Rust
+2. Waves compiles it into WebAssembly, or Wasm alightweight and high-performance executable
+3. Operatos then run your service off-chain, verify the results, and submit them back on-chain
+
+Benefits of waves:
+
+1. Focus on business logic and forget about managing infrastructure
+2. Composable services
+3. Lightweight and fast
+4. Multi-chain support
+5. Dynamic updates
+
+Basic components of a Waves service
+
+
+
+Triggers:
+
+
+
+Service Component:
+
+
+
+Submission logic
+
+
+
+**Example: a price oracle**
+
+A trigger event sends price data to your service component which processes it off-chain. Operators verify the service and submit it on-chain to use in other applications
+
+What are some use cases for Waves?
+
+- Oracles. Users can create oracles that bring trusted off-chain data on-chain, like weather data, stock prices or election results
+- Cross-chain bridges. Users can securely transfer assets between blockchains by triggering verifiable off-chain computation
+- ZK. Users can deploy ZK verifiers or provers as lightweight components for privacy-focused apps
+- Decentralized AI. Users can build AI agents that make verifiable decisions without relying on centralized servers
+
+
+
+## Waves lab
+
+### Setup
+
+platform: Ubuntu 24.04 (recommend)
+
+执行以下命令查看 Ubuntu 版本信息:
+
+```bash
+lsb_release -a
+```
+
+这会显示类似下面的信息：
+
+```bash
+Distributor ID: Ubuntu
+Description:    Ubuntu 24.04.2 LTS
+Release:        24.04
+Codename:       noble
+```
+
+升级ubuntu：
+
+```bash
+ sudo do-release-upgrade
+```
+
+在此之前需要修改配置：
+
+```bash
+sudo nano /etc/update-manager/release-upgrades
+```
+
+在文件中找到 `Prompt` 这一行，通常是：
+
+```bash
+Prompt=never
+
+```
+
+将其修改为：
+
+```bash
+Prompt=normal
+
+```
+
+保存并退出
+
+### 配置WAVS 环境
+
+（此前自行安装vscode 和solidity extension）
+
+Rust
+
+rust使用国内环境配置存在网络问题，这里建议换源。
+
+修改`.bashrc`文件：
+
+```bash
+vi ~/.bashrc
+```
+
+新增如下内容(使用中科大代理)
+
+```bash
+export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
+```
+
+修改生效
+
+```bash
+source ~/.bashrc
+```
+
+
+
+安装rust：
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+# Install required target and toolchain
 rustup toolchain install stable
 rustup target add wasm32-wasip2
 ```
 
-### Upgrade Rust
+
+
+#### Cargo Components
 
 ```bash
-# Remove old targets if present
-rustup target remove wasm32-wasi || true
-rustup target remove wasm32-wasip1 || true
-
-# Update and add required target
-rustup update stable
-rustup target add wasm32-wasip2
-```
-
-</details>
-
-<details>
-<summary>Cargo Components</summary>
-
-### Install Cargo Components
-
-```bash
-# Install required cargo components
-# https://github.com/bytecodealliance/cargo-component#installation
 cargo install cargo-binstall
 cargo binstall cargo-component warg-cli wkg --locked --no-confirm --force
 
@@ -77,120 +205,110 @@ cargo binstall cargo-component warg-cli wkg --locked --no-confirm --force
 wkg config --default-registry wa.dev
 ```
 
-</details>
-
-## Create Project
+#### Foundry
 
 ```bash
-# If you don't have foundry: `curl -L https://foundry.paradigm.xyz | bash && $HOME/.foundry/bin/foundryup`
-forge init --template Lay3rLabs/wavs-foundry-template my-wavs --branch 0.3
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
 ```
 
-> [!TIP]
-> Run `make help` to see all available commands and environment variable overrides.
-
-### Solidity
-
-Install the required packages to build the Solidity contracts. This project supports both [submodules](./.gitmodules) and [npm packages](./package.json).
+#### Docker
 
 ```bash
-# Install packages (npm & submodules)
+# Install Docker
+sudo apt -y install docker.io
+# Install Docker Compose
+sudo apt-get install docker-compose-v2
+```
+
+#### Make
+
+```bash
+sudo apt -y install make
+```
+
+#### JQ
+
+```bash
+sudo apt -y install jq
+```
+
+#### Node.js
+
+```bash
+
+```
+
+
+
+### Create your project
+
+
+
+```bash
+forge init --template Lay3rLabs/wavs-foundry-template waves-sports-oracle
+```
+
+
+
+```bash
+cd waves-sports-oracle
+```
+
+
+
+```bash
+code .
+```
+
+
+
+```bash
 make setup
-
-# Build the contracts
-forge build
-
-# Run the solidity tests
-forge test
 ```
 
-### Build WASI components
 
-Now build the WASI rust components into the `compiled` output directory.
-
-> [!WARNING]
-> If you get: `error: no registry configured for namespace "wavs"`
->
-> run, `wkg config --default-registry wa.dev`
-
-> [!WARNING]
-> If you get: `failed to find the 'wasm32-wasip1' target and 'rustup' is not available`
->
-> `brew uninstall rust` & install it from <https://rustup.rs>
 
 ```bash
-make wasi-build # or `make build` to include solidity compilation.
+make wasi-build
 ```
 
-### Execute WASI component directly
 
-Test run the component locally to validate the business logic works. An ID of 1 is Bitcoin. Nothing will be saved on-chain, just the output of the component is shown. This input is formatted using `cast format-bytes32-string` in the makefile command.
 
 ```bash
-COIN_MARKET_CAP_ID=1 make wasi-exec
+make
 ```
 
-## WAVS
 
-> [!NOTE]
-> If you are running on a Mac with an ARM chip, you will need to do the following:
-> - Set up Rosetta: `softwareupdate --install-rosetta`
-> - Enable Rosetta (Docker Desktop: Settings -> General -> enable "Use Rosetta for x86_64/amd64 emulation on Apple Silicon")
->
-> Configure one of the following networking:
-> - Docker Desktop: Settings -> Resources -> Network -> 'Enable Host Networking'
-> - `brew install chipmk/tap/docker-mac-net-connect && sudo brew services start chipmk/tap/docker-mac-net-connect`
-
-### Start Environment
-
-Start an Ethereum node (anvil), the WAVS service, and deploy [eigenlayer](https://www.eigenlayer.xyz/) contracts to the local network.
 
 ```bash
-cp .env.example .env
-
-# Start the backend
-#
-# This must remain running in your terminal. Use another terminal to run other commands.
-# You can stop the services with `ctrl+c`. Some MacOS terminals require pressing it twice.
-make start-all
+make wasi-exec
 ```
 
-### Deploy Contract
 
-Upload your service's trigger and submission contracts. The trigger contract is where WAVS will watch for events, and the submission contract is where the AVS service operator will submit the result on chain.
 
-```bash
-export SERVICE_MANAGER_ADDR=`make get-eigen-service-manager-from-deploy`
-forge script ./script/Deploy.s.sol ${SERVICE_MANAGER_ADDR} --sig "run(string)" --rpc-url http://localhost:8545 --broadcast
-```
+修改下面核心文件
 
-> [!TIP]
-> You can see the deployed trigger address with `make get-trigger-from-deploy`
-> and the deployed submission address with `make get-service-handler-from-deploy`
+files: components/src/sports-scores-oracle
 
-## Deploy Service
+src file:
 
-Deploy the compiled component with the contracts from the previous steps. Review the [makefile](./Makefile) for more details and configuration options.`TRIGGER_EVENT` is the event that the trigger contract emits and WAVS watches for. By altering `SERVICE_TRIGGER_ADDR` you can watch events for contracts others have deployed.
+binding.rs:
 
-```bash
-TRIGGER_EVENT="NewTrigger(bytes)" make deploy-service
-```
+lib.rs
 
-## Trigger the Service
+trigger.rs
 
-Anyone can now call the [trigger contract](./src/contracts/WavsTrigger.sol) which emits the trigger event WAVS is watching for from the previous step. WAVS then calls the service and saves the result on-chain.
+Cargo.toml
 
-```bash
-export COIN_MARKET_CAP_ID=1
-export SERVICE_TRIGGER_ADDR=`make get-trigger-from-deploy`
-forge script ./script/Trigger.s.sol ${SERVICE_TRIGGER_ADDR} ${COIN_MARKET_CAP_ID} --sig "run(string,string)" --rpc-url http://localhost:8545 --broadcast -v 4
-```
+Makefile
 
-## Show the result
+记得替换你的API_KEY
 
-Query the latest submission contract id from the previous request made.
+执行命令： 
 
-```bash
-# Get the latest TriggerId and show the result via `script/ShowResult.s.sol`
-make show-result
-```
+输出结果：
+
+
+
+### Using for a sports oracle
