@@ -44,13 +44,19 @@ https://blog.csdn.net/m0_46268825/article/details/142988063
 
 
 
-如何在Eigenlayer上构建基本的预言机（oracles）
+# How to build a basic oracles on Eigenlayer
 
-# Eigenlayer
+## Wavs: WebAssembly AVS
+
+Wavs: a platform thet lets developers easily build and run services, or AVSs on Eigenlayer with less complexity than building from scratch
+
+https://docs.wavs.xyz/
+
+
 
 ## AVS
 
-What ois AVS?
+What is AVS?
 
 AVS stands for Autonomous Verifiable Service
 
@@ -59,6 +65,10 @@ You can think of AVSs as samrt services that process data off-chain, but still p
 Eigenlayer is a platform for building verifiable services like oracles coprocessors, ZKTLS, verifiable AI, data availability and a handful of other verticals of services
 
 AVSs enable developers to build rich and expressive applications without being bound by any blockchain virtual machine
+
+![img](file:///E:\data\qq_data\Tencent Files\2405578454\nt_qq\nt_data\Pic\2025-05\Ori\5a6c516832670db361d4cce5041776bd.png)
+
+
 
 Waves takes care of the heavy lifiting of building an AVS, like infrastructure
 
@@ -142,17 +152,17 @@ sudo nano /etc/update-manager/release-upgrades
 
 ```bash
 Prompt=never
-
 ```
 
 将其修改为：
 
 ```bash
 Prompt=normal
-
 ```
 
 保存并退出
+
+
 
 ### 配置WAVS 环境
 
